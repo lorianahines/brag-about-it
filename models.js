@@ -32,8 +32,15 @@ const Brag = db.define('brag', {
     likes: Sequelize.INTEGER
 })
 
+const Comment  = db.define('comment', {
+    date: Sequelize.TIME,
+    content: Sequelize.TEXT,
+    likrd: Sequelize.INTEGER
+})
+
 module.exports = {
     db,
     User,
-    Brag
+    Brag,
+    Comment
 }
