@@ -35,8 +35,21 @@ const Brag = db.define('brag', {
 const Comment  = db.define('comment', {
     date: Sequelize.TIME,
     content: Sequelize.TEXT,
-    likrd: Sequelize.INTEGER
+    likes: Sequelize.INTEGER
 })
+
+
+
+//establish relationships
+User.hasMany(Comment, { onDelete: 'cascade'})
+Comment.belongsTo(User)
+
+User.hasMany(Brag, {onDelete: 'cascade'})
+Brag.belongsTo(User)
+
+Brag.hasMany(Comment, {onDelete: 'cascade'})
+Comment.belongsTo(Brag)
+
 
 module.exports = {
     db,
