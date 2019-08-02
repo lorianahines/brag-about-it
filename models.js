@@ -22,7 +22,8 @@ const User = db.define('user', {
 
 const Brag = db.define('brag', {
     title: Sequelize.STRING,
-    image: Sequelize.STRING,
+    business_name: Sequelize.STRING,
+    image: Sequelize.TEXT,
     description: Sequelize.TEXT,
     is_green: Sequelize.BOOLEAN,
     url: Sequelize.TEXT,

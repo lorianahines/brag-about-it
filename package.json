@@ -17,7 +17,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js",
     "db:init": "dropdb --if-exists brag && createdb brag",
-    "db:reset": "node resetDb.js"
+    "db:reset": "node resetDb.js",
+    "db:seed": "node seed.js"
   },
   "repository": {
     "type": "git",
