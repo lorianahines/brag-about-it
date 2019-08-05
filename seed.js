@@ -8,7 +8,7 @@ const seedData = async () =>{
     
         //create users
         const user1 = await User.create({
-            name: "Nayeli Ayinde",
+            name: "Nayeli Corundum",
             username: "naybags23",
             email: "nayay@gfakemail.com",
             password: "123456"
@@ -54,7 +54,8 @@ const seedData = async () =>{
             location: "Online Only",
             category: "beauty",
             date: 2019-06-02,
-            likes: 780
+            likes: 780,
+            user_id: 1
         })
         
     
@@ -68,7 +69,8 @@ const seedData = async () =>{
             location: "Online Only",
             category: "beauty",
             date: 2019-06-02,
-            likes: 883
+            likes: 883,
+            user_id: 2
         })
     
         const brag3 = await Brag.create({
@@ -81,7 +83,8 @@ const seedData = async () =>{
             location: "Online Only",
             category: "beauty",
             date: 2019-06-02,
-            likes: 431
+            likes: 431,
+            user_id: 3
         })
     
     
@@ -95,7 +98,8 @@ const seedData = async () =>{
             location: "Online Only",
             category: "clothing",
             date: 2019-6-02,
-            likes: 286
+            likes: 286,
+            user_id: 4
         })
     
         const brag5 = await Brag.create({
@@ -108,14 +112,36 @@ const seedData = async () =>{
             location: "Online Only",
             category: "clothing",
             date: 2019-06-02,
-            likes: 532
+            likes: 532,
+            user_id: 5
         })
 
-        brag1.setUser(user1)
-        brag2.setUser(user2)
-        brag3.setUser(user3)
-        brag4.setUser(user4)
-        brag5.setUser(user5)
+        // create comments
+        const comment1 = await Comment.create({
+            date: 2019-08-04,
+            content: 'I agree, Fenty beauty has the best selection of foundation shade.',
+            likes: 6,
+            user_id: 1,
+            brag_id: 2
+        })
+
+        const comment2 = await Comment.create({
+            date: 2019-08-04,
+            content: 'This clothing brand uses the best materials. Softest tee shirts I have owned yet.',
+            likes: 5,
+            user_id: 4,
+            brag_id: 5
+        })
+
+        const comment3 = await Comment.create({
+            date: 2019-08-05,
+            content: "This is the best makeup brand for liquid matte lipsticks. They have every color you could think of.",
+            likes: 23,
+            user_id: 5,
+            brag_id: 3
+        })
+       
+
         
     }catch(e){
         console.log('Something went wrong child', e)
