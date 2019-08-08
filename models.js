@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-
+const bcrypt = require('bcrypt')
 
 const db = new Sequelize({
 	database: 'brag',
@@ -18,7 +18,10 @@ const User = db.define('user', {
 	email: {
 		type: Sequelize.STRING,
 		allowNull: false,
-		unique: true,
+		unique: {
+			args: true,
+			msg: 'Enter a unique email, please'
+		},
 		validate: {
 			isEmail: true
 		}
@@ -73,7 +76,11 @@ const Comment  = db.define('comment', {
 	}
 })
 
-
+//hash user password
+User.beforeCreate(async (user, options) =>{
+	const secretPassword = await bcrypt.hash(user.password, 12)
+	user.password = secretPassword
+})
 
 module.exports = {
 	db,
