@@ -76,9 +76,9 @@ const Comment  = db.define('comment', {
 	}
 })
 
-//hash user password
+//hash user password before storing in database
 User.beforeCreate(async (user, options) =>{
-	const secretPassword = await bcrypt.hash(user.password, 12)
+	const secretPassword = await bcrypt.hash(user.password, 12) //takes in user's password and the number of salt rounds
 	user.password = secretPassword
 })
 
