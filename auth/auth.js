@@ -18,7 +18,13 @@ const checkPassword = async (password, password_digest) =>{
   return isValidated
 }
 
+//create a token by passing user data and using jwt.sign
+const createToken = (tokenData) => {
+  return jwt.sign(tokenData, TOKEN_KEY)
+}
+
 module.exports = {
   hashPassword,
-  checkPassword
+  checkPassword,
+  createToken
 }
