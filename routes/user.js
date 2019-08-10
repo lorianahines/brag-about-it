@@ -22,8 +22,22 @@ const addAuthResponse = (user) => {
 authRouter.post('/register', async(req, res) =>{
   try{
     const { name, username, email, password } = req.body
+    const hashedPassword = await hashPassword(password)
+
+    const newUser = await User.create({
+      name,
+      username, 
+      email,
+      password: hashedPassword
+    })
+
+    const authData = await addAuthResponse(newUser)
+
+    res.json({...authData})
 
   }catch(e){
     res.send(e.message)
   }
 })
+
+module.exports = authRouter
