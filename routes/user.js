@@ -36,7 +36,7 @@ authRouter.post('/register', async(req, res) =>{
     res.json({...authData})
 
   }catch(e){
-    res.send(e.message)
+    res.json(e.message)
   }
 })
 
