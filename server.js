@@ -5,6 +5,7 @@ const app = express()
 
 //require routers
 const authRouter = require('./routes/user')
+const bragRouter = require('./routes/brag')
 
 //require middleware
 const logger = require('morgan')
@@ -14,6 +15,7 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use(logger('dev'))
 app.use('/users', authRouter)
+app.use('/brags', bragRouter)
 
 const PORT = process.env.PORT || 4567
 
