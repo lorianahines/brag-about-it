@@ -5,10 +5,7 @@ const app = express()
 require('dotenv').config()
 const PORT = process.env.PORT || 4567
 
-const bodyParser = require('body-parser')
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
 //require routers
 const authRouter = require('./routers/authRouter')
 const bragRouter = require('./routers/brag')
@@ -16,15 +13,17 @@ const bragRouter = require('./routers/brag')
 //require middleware
 const logger = require('morgan')
 const passport = require('passport')
+const bodyParser = require('body-parser')
 
 //configure middleware
 app.use(cors())
 app.use(logger('dev'))
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
 app.use('/auth', authRouter)
 app.use(passport.initialize())
 app.use('/brags', bragRouter)
-
 
 
 app.get('/', async(req, res) =>{

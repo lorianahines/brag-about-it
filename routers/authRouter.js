@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const authRouter = Router()
-const { passport } = require('../auth/auth')
+const { passport, jwtSign } = require('../auth/auth')
+
 
 authRouter.post('/login', async(req, res, next) =>{
   passport.authenticate('login', async (err, user, info) => {
@@ -17,8 +18,12 @@ authRouter.post('/login', async(req, res, next) =>{
         //if logging in returns an error, send it to the next middleware
         if(error) return next(error)
 
-        //if login successful, send the user object over
-        return res.json({ user })
+        //if login successful, create token and send the user object over
+        const {email, id} = user
+        const payload = { email, id }
+        const token = jwtSign(payload)
+        
+        return res.json({ user, token })
       })
     }catch(e){
       console.log("passport authenticate", e)

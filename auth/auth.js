@@ -4,7 +4,13 @@ const LocalStrategy = require('passport-local').Strategy
 const { User } = require('../models')
 const bcrypt = require('bcrypt')
 require('dotenv').config()
-// const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
+
+const SECRET = process.env.SECRET
+
+const jwtSign = (payload) => {
+  return jwt.sign(payload, SECRET)
+}
 
 //use authentication strategy to handle login requests
 passport.use('login', new LocalStrategy({
@@ -42,5 +48,6 @@ passport.use('login', new LocalStrategy({
 
 
 module.exports = {
-  passport
+  passport,
+  jwtSign
 }
