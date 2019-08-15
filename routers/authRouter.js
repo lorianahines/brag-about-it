@@ -1,44 +1,31 @@
 const { Router } = require('express')
 const authRouter = Router()
-// const { User } = require('../models')
-// const { hashPassword, checkPassword, createToken } = require('../auth/auth')
+const { passport } = require('../auth/auth')
 
-
-// const addAuthResponse = (user) => {
-//   const userData = {
-//     id: user.id,
-//     username: user.username,
-//     email: user.email
-//   }
-//   const token = createToken(userData)
-
-//   return {
-//     user: userData,
-//     token
-//   }
-// }
-
-//register
 authRouter.post('/login', async(req, res, next) =>{
-  res.status(200).json({message: "so far so good"})
-  // try{
-  //   const { name, username, email, password } = req.body
-  //   const hashedPassword = await hashPassword(password)
+  passport.authenticate('login', async (err, user, info) => {
+    try{
+      //user has not been authenticated
+      if(err || !user) {
+        console.log("user not authenticated", err, user, info)
+        // const error = new Error('An error occurred')
+        return next(err)
+      }
 
-  //   const newUser = await User.create({
-  //     name,
-  //     username, 
-  //     email,
-  //     password: hashedPassword
-  //   })
+      //login if there is a user
+      req.login(user, { session: false }, async (error) =>{
+        //if logging in returns an error, send it to the next middleware
+        if(error) return next(error)
 
-  //   const authData = await addAuthResponse(newUser)
-
-  //   res.json({...authData})
-
-  // }catch(e){
-  //   res.json(e.message)
-  // }
+        //if login successful, send the user object over
+        return res.json({ user })
+      })
+    }catch(e){
+      console.log("passport authenticate", e)
+      return next(e)
+    }
+  })(req,res, next)
+  
 })
 
 module.exports = authRouter

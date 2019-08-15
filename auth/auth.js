@@ -1,31 +1,46 @@
 //require dependencies
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy
+const { User } = require('../models')
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+require('dotenv').config()
+// const jwt = require('jsonwebtoken')
 
-//set salt rounds and  token key
-const SALT_ROUNDS = 12
-const TOKEN_KEY = process.env.TOKEN_KEY || 'thisisareallylongtokenkeybutitaintveryeffective'
+//use authentication strategy to handle login requests
+passport.use('login', new LocalStrategy({
+  usernameField: 'email',
+  passwordField: 'password'
+}, async (email, password, done) => {
+  try{
 
-//hash user's password before entering it into the database
-const hashPassword = async (password) =>{
-  const passwordDigest = await bcrypt.hash(password, SALT_ROUNDS)
-  return passwordDigest
-}
+    //find user by email
+    const user = await User.findOne({ where: {email: email}})
+    console.log("this is the user email" , user.email)
 
-//check the password when user logins 
-const checkPassword = async (password, password_digest) =>{
-  const isValidated = await bcrypt.compare(password, password_digest)
-  return isValidated
-}
+    //if user doesn't exist pass on false and message to nect middleware function
+    if(!user){
+      console.log("User not found. You don't even go here.")
+      return done(null, false, {message: "User not found. You don't even go here."})
+    }
+    //after we get the user, compare the entered password with the one in the database
+    const validate = await bcrypt.compare(password, user.password)
+    console.log(`***** validated: ${validate} *****`)
+    //wrong password
+    if(!validate){
+      console.log("wrong password")
+      return done(null, false, { message: "Wrong password."})
+    }
+    //correct password
+    console.log("successfull login")
+    return done(null, user, {message: 'Logged in successfully!'})
 
-//create a token by passing user data and using jwt.sign
-const createToken = (tokenData) => {
-  console.log('The token key is: ' + TOKEN_KEY)
-  return jwt.sign(tokenData, TOKEN_KEY)
-}
+  }catch(e){
+    console.log("auth localstrategy", e)
+    return done(e)
+  }
+}))
+
 
 module.exports = {
-  hashPassword,
-  checkPassword,
-  createToken
+  passport
 }
