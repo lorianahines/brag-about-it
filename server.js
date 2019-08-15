@@ -2,28 +2,33 @@
 const express = require('express')
 const cors = require('cors')
 const app = express()
+require('dotenv').config()
+const PORT = process.env.PORT || 4567
 
 //require routers
-const authRouter = require('./routes/user')
-const bragRouter = require('./routes/brag')
+const authRouter = require('./routers/authRouter')
+const bragRouter = require('./routers/brag')
 
 //require middleware
 const logger = require('morgan')
 const bodyParser = require('body-parser')
 
+//configure middleware
 app.use(cors())
 app.use(bodyParser.json())
 app.use(logger('dev'))
-app.use('/users', authRouter)
+
+app.use('/auth', authRouter)
 app.use('/brags', bragRouter)
 
-const PORT = process.env.PORT || 4567
+
 
 app.get('/', async(req, res) =>{
     try{
         res.json({msg: "You're connected to Brag About It server."})
     }catch(err){
         console.log(err)
+        response.status(e.status).json({ message: e.status })
     }
 })
 
