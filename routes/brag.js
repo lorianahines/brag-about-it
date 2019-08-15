@@ -10,14 +10,14 @@ bragRouter.get('/all', async (req,res) =>{
     const allBrags = await Brag.findAll({
       raw: true,
       include: {
-        model: Comment,
-        on:{
-          id:{
-            [Op.eq] : Comment.brag_id
-          }
+        model: Comment
+        // on:{
+        //   id:{
+        //     [Op.eq] : Comment.brag_id
+        //   }
         }
       }
-    })
+    )
     console.log(allBrags)
     res.json(allBrags)
   }catch(e){

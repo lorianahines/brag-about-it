@@ -53,10 +53,8 @@ const seedData = async () =>{
 			location: "Online Only",
 			category: "beauty",
 			date: 2019-06-02,
-			likes: 780,
-			user_id: 1
+			likes: 780
 		})
-			
 	
 		const brag2 = await Brag.create({
 			title: "This makeup line is dope!",
@@ -68,10 +66,9 @@ const seedData = async () =>{
 			location: "Online Only",
 			category: "beauty",
 			date: 2019-06-02,
-			likes: 883,
-			user_id: 2
+			likes: 883
 		})
-	
+
 		const brag3 = await Brag.create({
 			title: "Fenty is soooo luxurious",
 			business_name: "Fenty Beauty",
@@ -82,10 +79,8 @@ const seedData = async () =>{
 			location: "Online Only",
 			category: "beauty",
 			date: 2019-06-02,
-			likes: 431,
-			user_id: 3
+			likes: 431
 		})
-	
 	
 		const brag4 = await Brag.create({
 			title: "These clothes have so much swag.",
@@ -97,8 +92,7 @@ const seedData = async () =>{
 			location: "Online Only",
 			category: "clothing",
 			date: 2019-6-02,
-			likes: 286,
-			user_id: 4
+			likes: 286
 		})
 
 		const brag5 = await Brag.create({
@@ -111,34 +105,45 @@ const seedData = async () =>{
 			location: "Online Only",
 			category: "clothing",
 			date: 2019-06-02,
-			likes: 532,
-			user_id: 5
+			likes: 532
 		})
 
 			// create comments
 		const comment1 = await Comment.create({
 			date: 2019-08-04,
 			content: 'I agree, Fenty beauty has the best selection of foundation shade.',
-			likes: 6,
-			user_id: 1,
-			brag_id: 2
+			likes: 6
+			// user_id: 1,
+			// brag_id: 2
 		})
 
 		const comment2 = await Comment.create({
 			date: 2019-08-04,
 			content: 'This clothing brand uses the best materials. Softest tee shirts I have owned yet.',
-			likes: 5,
-			user_id: 4,
-			brag_id: 5
+			likes: 5
+			// user_id: 4,
+			// brag_id: 5
 		})
 
 		const comment3 = await Comment.create({
 			date: 2019-08-05,
 			content: "This is the best makeup brand for liquid matte lipsticks. They have every color you could think of.",
-			likes: 23,
-			user_id: 5,
-			brag_id: 3
+			likes: 23
+			// user_id: 5,
+			// brag_id: 3
 		})
+
+		await brag1.setUser(user1)
+		await brag2.setUser(user2)
+		await brag3.setUser(user3)
+		await brag4.setUser(user4)
+		await brag5.setUser(user5)
+		await comment1.setUser(user1)
+		await comment1.setBrag(brag2)
+		await comment2.setUser(user4)
+		await comment2.setBrag(brag5)
+		await comment3.setUser(user5)
+		await comment3.setBrag(brag3)
 			
 	}catch(e){
 		console.log('Something went wrong child', e)

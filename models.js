@@ -44,37 +44,45 @@ const Brag = db.define('brag', {
 	category: Sequelize.TEXT,
 	date: Sequelize.TIME,
 	likes: Sequelize.INTEGER,
-	user_id: {
-		type: Sequelize.INTEGER,
-		allowNull: false,
-		references: {
-			model: User,
-			key: 'id'
-		}
-	}
+	// user_id: {
+	// 	type: Sequelize.INTEGER,
+	// 	allowNull: false,
+	// 	references: {
+	// 		model: User,
+	// 		key: 'id'
+	// 	}
+	// }
 })
 
 const Comment  = db.define('comment', {
 	date: Sequelize.TIME,
 	content: Sequelize.TEXT,
 	likes: Sequelize.INTEGER,
-	user_id: {
-		type: Sequelize.INTEGER,
-		allowNull: false,
-		references: {
-			model: User,
-			key: 'id'
-		}
-	},
-	brag_id: {
-		type: Sequelize.INTEGER,
-		allowNull: false,
-		references: {
-			model: Brag,
-			key: 'id'
-		}
-	}
+	// user_id: {
+	// 	type: Sequelize.INTEGER,
+	// 	allowNull: false,
+	// 	references: {
+	// 		model: User,
+	// 		key: 'id'
+	// 	}
+	// },
+	// brag_id: {
+	// 	type: Sequelize.INTEGER,
+	// 	allowNull: false,
+	// 	references: {
+	// 		model: Brag,
+	// 		key: 'id'
+	// 	}
+	// }
 })
+
+User.hasMany(Brag)
+User.hasMany(Comment)
+Brag.hasMany(Comment)
+Brag.belongsTo(User)
+Comment.belongsTo(Brag)
+Comment.belongsTo(User)
+
 
 //hash user password before storing in database
 User.beforeCreate(async (user, options) =>{
