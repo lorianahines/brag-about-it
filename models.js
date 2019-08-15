@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const bcrypt = require('bcrypt')
+// const bcrypt = require('bcrypt')
 
 const db = new Sequelize({
 	database: 'brag',
@@ -11,7 +11,6 @@ const db = new Sequelize({
 })
 
 //define models
-
 const User = db.define('user', {
 	name: Sequelize.STRING,
 	username: Sequelize.STRING,
@@ -44,36 +43,12 @@ const Brag = db.define('brag', {
 	category: Sequelize.TEXT,
 	date: Sequelize.TIME,
 	likes: Sequelize.INTEGER,
-	// user_id: {
-	// 	type: Sequelize.INTEGER,
-	// 	allowNull: false,
-	// 	references: {
-	// 		model: User,
-	// 		key: 'id'
-	// 	}
-	// }
 })
 
 const Comment  = db.define('comment', {
 	date: Sequelize.TIME,
 	content: Sequelize.TEXT,
 	likes: Sequelize.INTEGER,
-	// user_id: {
-	// 	type: Sequelize.INTEGER,
-	// 	allowNull: false,
-	// 	references: {
-	// 		model: User,
-	// 		key: 'id'
-	// 	}
-	// },
-	// brag_id: {
-	// 	type: Sequelize.INTEGER,
-	// 	allowNull: false,
-	// 	references: {
-	// 		model: Brag,
-	// 		key: 'id'
-	// 	}
-	// }
 })
 
 User.hasMany(Brag)
@@ -85,10 +60,10 @@ Comment.belongsTo(User)
 
 
 //hash user password before storing in database
-User.beforeCreate(async (user, options) =>{
-	const secretPassword = await bcrypt.hash(user.password, 12) //takes in user's password and the number of salt rounds
-	user.password = secretPassword
-})
+// User.beforeCreate(async (user, options) =>{
+// 	const secretPassword = await bcrypt.hash(user.password, 12) //takes in user's password and the number of salt rounds
+// 	user.password = secretPassword
+// })
 
 module.exports = {
 	db,

@@ -1,4 +1,7 @@
 const { User, Brag, Comment } = require("./models")
+const bcrypt = require('bcrypt')
+require('dotenv').config()
+const SALT_ROUNDS = process.env.SALT_ROUNDS
 
 const seedData = async () =>{
 	try{
@@ -6,40 +9,42 @@ const seedData = async () =>{
 			where: {}
 		})
 	
+		//hash password
+	const hashedPassword = await bcrypt.hash('password', Number(SALT_ROUNDS))
 		//create users
 		const user1 = await User.create({
 			name: "Nayeli Corundum",
 			username: "naybags23",
 			email: "nayay@gfakemail.com",
-			password: "123456"
+			password: hashedPassword
 		})
 	
 		const user2 = await User.create({
 			name: "Simba King",
 			username: "lionchild",
 			email: "ripdaddy@fakemail.com",
-			password: "123456"
+			password: hashedPassword
 		})
 	
 		const user3 = await User.create({
 			name: "Zelie Illorin",
 			username: "zelieoya",
 			email: "orisha@fakemail.com",
-			password: "123456"
+			password: hashedPassword
 		})
 	
 		const user4 = await User.create({
 			name: "Sansa Stark",
 			username: "queensnow",
 			email: "ladywinterfell@fakemail.com",
-			password: "123456"
+			password: hashedPassword
 		})
 
 		const user5 = await User.create({
 			name: "Syenite Rogga",
 			username: "corosmomma",
 			email: "yumenes@fakemail.com",
-			password: "123456"
+			password: hashedPassword
 		})
 	
 		//create brags
@@ -150,5 +155,14 @@ const seedData = async () =>{
 	}
 
 }
+const run = async () => {
+  try {
+    await seedData()
+  } catch (e) {
+    console.log(e)
+  } finally {
+    await process.exit()
+  }
+}
 
-seedData()
+run()
