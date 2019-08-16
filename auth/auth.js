@@ -12,7 +12,32 @@ const jwtSign = (payload) => {
   return jwt.sign(payload, SECRET)
 }
 
-//use authentication strategy to handle login requests
+//passport strategy to handle signup
+passport.use('signup', new LocalStrategy({
+  usernameField: 'email',
+  passwordField: 'password',
+  passReqToCallback: true
+}, async (req, email, password, done) => {
+  try{
+    const { body: {name}} = req
+    const user = await User.create({
+      name: name,
+      email: email,
+      password: password
+    })
+
+    if(!user){
+      return done(null, false, { message: 'Unable to sign up user.'})
+    }
+    done(null, user)
+
+  }catch(e){
+    console.log(e)
+    done(e)
+  }
+}))
+
+//passport strategy to handle login requests
 passport.use('login', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password'

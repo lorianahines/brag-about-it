@@ -20,9 +20,9 @@ app.use(cors())
 app.use(logger('dev'))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+app.use(passport.initialize())
 
 app.use('/auth', authRouter)
-app.use(passport.initialize())
 app.use('/brags', bragRouter)
 
 

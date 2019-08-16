@@ -2,6 +2,20 @@ const { Router } = require('express')
 const authRouter = Router()
 const { passport, jwtSign } = require('../auth/auth')
 
+authRouter.post('/signup', async(req, res, next) => {
+  passport.authenticate('signup', async(err, user) => {
+    try{
+      const { email, id } = user
+      const payload = { email, id }
+      const token = jwtSign(payload)
+
+      return res.json({user, token, message: "user successfully created"})
+    }catch(e){
+      console.log(e)
+      return next(e)
+    }
+  })(req, res, next)
+})
 
 authRouter.post('/login', async(req, res, next) =>{
   passport.authenticate('login', async (err, user, info) => {
@@ -22,7 +36,7 @@ authRouter.post('/login', async(req, res, next) =>{
         const {email, id} = user
         const payload = { email, id }
         const token = jwtSign(payload)
-        
+
         return res.json({ user, token })
       })
     }catch(e){
