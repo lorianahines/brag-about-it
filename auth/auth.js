@@ -5,12 +5,27 @@ const { User } = require('../models')
 const bcrypt = require('bcrypt')
 require('dotenv').config()
 const jwt = require('jsonwebtoken')
+const JWTStrategy = require('passport-jwt').Strategy
+const ExtractJWT = require('passport-jwt').ExtractJwt
 
 const SECRET = process.env.SECRET
 
 const jwtSign = (payload) => {
   return jwt.sign(payload, SECRET)
 }
+
+//middleware to implement jwtstrategy
+passport.use(new JWTStrategy({
+  secretOrKey: SECRET,
+  jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken()
+}, async(token,done) => {
+  try{
+    const user = await User.findByPk(token.id)
+    user ? done(null, user) : done(null, false)
+  }catch(e){
+    done(e)
+  }
+})) 
 
 //passport strategy to handle signup
 passport.use('signup', new LocalStrategy({
@@ -19,9 +34,10 @@ passport.use('signup', new LocalStrategy({
   passReqToCallback: true
 }, async (req, email, password, done) => {
   try{
-    const { body: {name}} = req
+    const { name, username } = req.body
     const user = await User.create({
       name: name,
+      username: username,
       email: email,
       password: password
     })
@@ -71,8 +87,24 @@ passport.use('login', new LocalStrategy({
   }
 }))
 
+//midleware for checking auth with jwt
+const authorized = (req, res, next) => {
+  passport.authenticate('jwt', { session: false }, async (error, user) => {
+    if (error || !user ) {
+      console.log(error)
+      let err = new Error('No bueno, no access allowed.')
+      err.status = 401
+      return next(err)
+    }
+
+    req.user = user
+    return next()
+  })(req, res, next)
+}
+
 
 module.exports = {
   passport,
-  jwtSign
+  jwtSign,
+  authorized
 }

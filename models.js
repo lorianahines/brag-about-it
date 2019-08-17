@@ -1,5 +1,7 @@
 const Sequelize = require('sequelize');
-// const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt')
+require('dotenv').config()
+const SALT_ROUNDS = process.env.SALT_ROUNDS
 
 const db = new Sequelize({
 	database: 'brag',
@@ -60,10 +62,10 @@ Comment.belongsTo(User)
 
 
 //hash user password before storing in database
-// User.beforeCreate(async (user, options) =>{
-// 	const secretPassword = await bcrypt.hash(user.password, 12) //takes in user's password and the number of salt rounds
-// 	user.password = secretPassword
-// })
+User.beforeCreate(async (user, options) =>{
+	const hashPassword = await bcrypt.hash(user.password, Number(SALT_ROUNDS)) //takes in user's password and the number of salt rounds
+	user.password = hashPassword
+})
 
 module.exports = {
 	db,

@@ -9,6 +9,8 @@ const PORT = process.env.PORT || 4567
 //require routers
 const authRouter = require('./routers/authRouter')
 const bragRouter = require('./routers/brag')
+const appRouter = require('./routers/appRouter')
+const { authorized } = require('./auth/auth')
 
 //require middleware
 const logger = require('morgan')
@@ -24,6 +26,7 @@ app.use(passport.initialize())
 
 app.use('/auth', authRouter)
 app.use('/brags', bragRouter)
+app.use('/app', authorized, appRouter)
 
 
 app.get('/', async(req, res) =>{
