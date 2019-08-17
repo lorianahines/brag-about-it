@@ -11,10 +11,6 @@ bragRouter.get('/all', async (req,res) =>{
       raw: true,
       include: {
         model: Comment
-        // on:{
-        //   id:{
-        //     [Op.eq] : Comment.brag_id
-        //   }
         }
       }
     )
