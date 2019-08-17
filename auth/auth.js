@@ -48,7 +48,6 @@ passport.use('signup', new LocalStrategy({
     done(null, user)
 
   }catch(e){
-    console.log(e)
     done(e)
   }
 }))
@@ -62,11 +61,9 @@ passport.use('login', new LocalStrategy({
 
     //find user by email
     const user = await User.findOne({ where: {email: email}})
-    console.log("this is the user email" , user.email)
 
     //if user doesn't exist pass on false and message to nect middleware function
     if(!user){
-      console.log("User not found. You don't even go here.")
       return done(null, false, {message: "User not found. You don't even go here."})
     }
     //after we get the user, compare the entered password with the one in the database
@@ -74,7 +71,6 @@ passport.use('login', new LocalStrategy({
     console.log(`***** validated: ${validate} *****`)
     //wrong password
     if(!validate){
-      console.log("wrong password")
       return done(null, false, { message: "Wrong password."})
     }
     //correct password
@@ -82,7 +78,6 @@ passport.use('login', new LocalStrategy({
     return done(null, user, {message: 'Logged in successfully!'})
 
   }catch(e){
-    console.log("auth localstrategy", e)
     return done(e)
   }
 }))
